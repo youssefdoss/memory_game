@@ -65,47 +65,44 @@ function unFlipCard(card1, card2) {
 
 /** Handle clicking on a card: this could be first-card or second-card. */
 
-let foundColors = [];
+// These are global variables I needed to make this work, but I'm sure there is a cleaner solution
+let foundColors = ['gray'];
 let current1;
 let current2;
 
 function handleCardClick(evt) {
+  // Don't allow user to flip a card that is already flipped
   if (evt.target.style.backgroundColor !== 'gray') {
     return;
   }
+
+  // Count how many cards are currently face up that haven't already been matched
   const cards = document.querySelectorAll('.card');
-  let remainingCards = cards.length;
   let count = 0;
   for (let i = 0; i < cards.length; i++) {
-    if (cards[i].style.backgroundColor !== 'gray') {
+    if (cards[i].style.backgroundColor !== 'gray' && !foundColors.includes(cards[i].style.backgroundColor)) {
       count++;
     }
   }
+  
+  // Don't allow user to click before the two non matching cards have flipped back over
+  if (count > 1) {
+    return;
+  }
+  
+  // Flip the card that was clicked
   flipCard(evt.target);
-  if (count % 2 === 0) {
+
+  // Save the first card that was clicked
+  if (count === 0) {
     current1 = evt.target;
-  } else if (count % 2 === 1) {
+  // Save the second card that was clicked and check if the two card colors match
+  } else if (count === 1) {
     current2 = evt.target;
-    let card1Color;
-    let card2Color;
-    for (let i = 0; i < cards.length; i++) {
-      if (card1Color === undefined) {
-        if (cards[i].style.backgroundColor !== 'gray' && !foundColors.includes(cards[i].style.backgroundColor)) {
-          card1Color = cards[i].style.backgroundColor;
-        }
-      } else {
-        if (cards[i].style.backgroundColor !== 'gray' && !foundColors.includes(cards[i].style.backgroundColor)) {
-          card2Color = cards[i].style.backgroundColor;
-        }
-      }
-    }
-    if (card1Color !== card2Color) {
-      let card1 = document.getElementsByClassName(card1Color);
-      let card2 = document.getElementsByClassName(card2Color);
+    if (current1.style.backgroundColor !== current2.style.backgroundColor) {
       setTimeout(unFlipCard, 1000, current1, current2);
     } else {
-      foundColors.push(card1Color);
-      remainingCards = remainingCards - 2;
+      foundColors.push(current1.style.backgroundColor);
     }
     current1 = undefined;
     current2 = undefined;

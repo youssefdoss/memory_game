@@ -1,9 +1,42 @@
 /* you can add to or change this. */
 
+body {
+  background-color: lightgray;
+}
+
+#vertical-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#horizontal-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+#game {
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 800px;
+}
+
+h1 {
+  font-family: sans-serif;
+  text-align: center;
+  font-weight: bold;
+}
+
 #game div {
   border: 1px solid black;
   width: 100px;
-  height: 100px;
+  height: 175px;
   margin: 20px;
   display: inline-block;
 }
